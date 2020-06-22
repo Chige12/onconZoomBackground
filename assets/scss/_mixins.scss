@@ -1,0 +1,46 @@
+@mixin noto($size: 16px, $color: $dark-gray, $weight: null) {
+  font-size: $size;
+  @if $color != null {
+    color: $color;
+  }
+  @if $weight != null {
+    font-weight: $weight;
+  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin absolute(
+  $top: null,
+  $left: null,
+  $right: null,
+  $bottom: null,
+  $margin: auto
+) {
+  position: absolute;
+  margin: auto;
+  @if $top != null {
+    top: $top;
+  }
+  @if $right != null {
+    right: $right;
+  }
+  @if $bottom != null {
+    bottom: $bottom;
+  }
+  @if $left != null {
+    left: $left;
+  }
+}
+
+@mixin flex(
+  $wrap: nowrap,
+  $justifyContent: space-between,
+  $alignItems: center
+) {
+  display: flex;
+  flex-wrap: $wrap;
+  justify-content: $justifyContent;
+  align-items: $alignItems;
+}
