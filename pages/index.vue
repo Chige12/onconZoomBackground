@@ -47,7 +47,7 @@ export default {
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
         attributeSmall: 'オンコン運営',
         attributeLarge: 'デザイン',
-        attributeBottom: '2020 #2',
+        attributeBottom: '',
       },
       imgData: null,
     }
