@@ -6,13 +6,18 @@
     .virtual-body
       v-app
         .container
-          v-switch(label="アンバサ用にする" v-model="sourceText.isAmbas" @change="toggleambas()")
-          v-text-field(label="名前を入力" v-model="sourceText.name" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+          h3.my-1 オンコン用 Zoom背景つく〜る
+          p 過去参加者の方は「アンバサ用にする」をクリック！ 運営かアンバサかわかりやすいように、青背景をアンバサ用にしてます。
+          v-row
+            v-col(cols="12" sm="10")
+              v-text-field(label="名前を入力" v-model="sourceText.name" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+            v-col(cols="12" sm="2")
+              v-switch(label="アンバサ用にする" v-model="sourceText.isAmbas" @change="toggleambas()")
           v-row
             v-col(cols="12" sm="6")
               v-text-field(label="Twitter名を入力（@無し）" v-model="sourceText.twitter" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
             v-col(cols="12" sm="6")
-              v-text-field(label="hashtags" v-model="hashtagsCom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+              v-text-field(label="ハッシュタグ（カンマで区切り）" v-model="hashtagsCom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
           v-row
             v-col(cols="12" sm="4")
               v-text-field(label="縦文字（小）" v-model="sourceText.attributeSmall" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
@@ -22,7 +27,7 @@
               v-text-field(label="最初に参加したオンコン（2020 #2 など）" v-model="sourceText.attributeBottom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
           v-btn(@click="downloadImage()") 画像出力
           span.ml-4 {{`zoomBG_${sourceText.name}.png`}}
-        .result-wrapper.mt-8
+        .result-wrapper.mt-6
           .container
             img#result(src="").result-img
             a#hiddenLink(:download="`zoomBG_${sourceText.name}.png`")
@@ -84,6 +89,7 @@ export default {
         this.sourceText.attributeLarge = 'アンバサ'
         this.sourceText.attributeBottom = '2020 #2'
       } else {
+        this.cash.isAmbas = false
         this.sourceText = JSON.parse(JSON.stringify(this.cash))
       }
       this.delaycapturecanvas(50)

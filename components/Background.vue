@@ -137,7 +137,8 @@ export default {
 }
 .hashtags {
   line-height: 2;
-  @include noto($size: 24px, $weight: $font-bold);
+  @include noto($size: 28px, $weight: $font-bold);
+  margin-top: -8px;
   &.nosns {
     font-size: 38px;
     margin-top: 28px;
