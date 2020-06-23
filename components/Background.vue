@@ -1,6 +1,6 @@
 <template lang="pug">
 .back-ground
-  .img-target#target
+  .img-target#target(:class="{'ambas':sourceText.isAmbas}")
     .left-bar(:class="{'ambas-bar':sourceText.isAmbas}")
     .main-contents
       .header
@@ -23,7 +23,7 @@
             .attribute-bottom(v-if="sourceText.attributeBottom" :class="{'ambas':sourceText.isAmbas}") {{sourceText.attributeBottom}}
         .visual-background
           img(v-if="sourceText.isAmbas" src="~/assets/background-ambas.svg").background
-          img(v-else="sourceText.isAmbas" src="~/assets/background-official.svg").background
+          img(v-else="sourceText.isAmbas" src="~/assets/background-official.svg").background.background-official
           Logo
 </template>
 <script>
@@ -80,11 +80,18 @@ export default {
 .img-target {
   width: $img-width;
   height: $img-height;
-  background: $white;
+  background: $light-gray;
   @include flex($justifyContent: flex-start);
+  &.ambas {
+    background: $white;
+  }
 }
 .left-bar {
-  background: linear-gradient(135deg, $oncon-yellow 0%, $oncon-blue 100%);
+  background: linear-gradient(
+    -135deg,
+    rgba($official-green, $official-opacity) 0%,
+    rgba($official-blue, $official-opacity) 100%
+  );
   width: $left-bar-width;
   height: $img-height;
   flex-shrink: 0;
@@ -103,6 +110,9 @@ export default {
   display: block;
   width: $background-width;
   height: $background-height;
+  &-official {
+    opacity: $official-opacity;
+  }
 }
 .header {
   width: 100%;
@@ -159,14 +169,14 @@ export default {
 }
 .attribute-small {
   margin-right: 8px;
-  @include noto($size: 40px, $color: $oncon-text, $weight: $font-medium);
+  @include noto($size: 40px, $color: $official-text, $weight: $font-medium);
   &.ambas {
     color: $ambas-text;
   }
 }
 .attribute-large {
   margin-right: -38px;
-  @include noto($size: 102px, $color: $oncon-text, $weight: $font-bold);
+  @include noto($size: 102px, $color: $official-text, $weight: $font-bold);
   &.ambas {
     color: $ambas-text;
   }
@@ -175,7 +185,7 @@ export default {
   width: 100%;
   text-align: center;
   @include absolute($bottom: 16px, $left: 0);
-  @include noto($size: 28px, $color: $oncon-text, $weight: $font-bold);
+  @include noto($size: 28px, $color: $official-text, $weight: $font-bold);
   writing-mode: horizontal-tb;
   &.ambas {
     color: $ambas-text;

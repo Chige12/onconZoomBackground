@@ -7,7 +7,7 @@
       v-app
         .container
           h3.my-1 オンコン用 Zoom背景つく〜る
-          p 過去参加者の方は「アンバサ用にする」をクリック！ 運営かアンバサかわかりやすいように、青背景をアンバサ用にしてます。
+          p アンバサの方は「アンバサ用にする」をクリック！ 運営かアンバサかわかりやすいように色を変えてます。
           v-row
             v-col(cols="12" sm="10")
               v-text-field(label="名前を入力" v-model="sourceText.name" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
@@ -125,7 +125,6 @@ export default {
     downloadImage() {
       const link = document.getElementById('hiddenLink')
       link.href = this.imgData
-      console.log(link)
       link.click()
     },
   },
