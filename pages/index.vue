@@ -16,10 +16,10 @@
             v-col(cols="12" sm="2")
               v-switch(label="アンバサ用にする" v-model="isAmbas" @change="toggleambas()")
           v-row
-            v-col(cols="12" sm="6")
+            v-col(cols="12" sm="3")
               v-text-field(label="Twitter名を入力（@無し）" v-model="sourceText.twitter" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
-            //- v-col(cols="12" sm="3")
-            //-   v-text-field(label="Facebook名を入力" v-model="sourceText.twitter" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+            v-col(cols="12" sm="3")
+              v-text-field(label="Facebook idを入力" v-model="sourceText.facebook" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
             v-col(cols="12" sm="6")
               v-text-field(label="ハッシュタグ（カンマで区切り）" v-model="hashtagsCom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
           v-row
@@ -28,7 +28,7 @@
             v-col(cols="12" sm="3")
               v-text-field(label="縦文字（大）" v-model="sourceText.attributeLarge" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
             v-col(cols="12" sm="3")
-              v-text-field(label="最初に参加したオンコン（2020 #2 など）" v-model="sourceText.attributeBottom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+              v-text-field(label="初参加のオンコン（2020 #2 など）" v-model="sourceText.attributeBottom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
             v-col(cols="12" sm="3")
               v-file-input(
                 v-model="files"
@@ -63,6 +63,7 @@ export default {
       sourceText: {
         name: 'ちげ',
         twitter: 'Chige12_',
+        facebook: 'chige12f',
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
         attributeSmall: 'オンコン運営',
         attributeLarge: 'デザイン',
@@ -71,6 +72,7 @@ export default {
       officialCash: {
         name: 'ちげ',
         twitter: 'Chige12_',
+        facebook: 'chige12f',
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
         attributeSmall: 'オンコン運営',
         attributeLarge: 'デザイン',
@@ -79,6 +81,7 @@ export default {
       ambasCash: {
         name: 'ちげ',
         twitter: 'Chige12_',
+        facebook: 'chige12f',
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
         attributeSmall: '過去の参加者',
         attributeLarge: 'アンバサ',

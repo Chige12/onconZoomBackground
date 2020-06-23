@@ -6,10 +6,13 @@
       .header
         .name {{sourceText.name}}
         .self-introduction
-          .sns
-            .twitter(v-if="sourceText.twitter")
-              img(src="~/assets/twitter.svg").twitter-icon
-              span.twitter-name {{'@' + sourceText.twitter}}
+          .snss
+            .sns(v-if="sourceText.twitter")
+              img(src="~/assets/twitter.svg").sns-icon
+              span.sns-name {{'@' + sourceText.twitter}}
+            .sns(v-if="sourceText.twitter")
+              img(src="~/assets/facebook.svg").sns-icon
+              span.sns-name {{sourceText.facebook}}
           .hashtags(:class="{'nosns': !sourceText.twitter}")
             span.hashtag(v-for="hashtag in sourceText.hashtags" :key="hashtag") {{'#' + hashtag}}
       .contents
@@ -145,19 +148,20 @@ export default {
   padding-left: 24px;
   height: 100%;
 }
-.sns {
+.snss {
   margin-top: 48px;
   @include flex($justifyContent: flex-start, $alignItems: flex-start);
 }
-.twitter {
+.sns {
   @include flex($justifyContent: flex-start, $alignItems: flex-start);
+  margin-right: 16px;
 }
-.twitter-icon {
+.sns-icon {
   display: block;
   width: 60px;
   height: 60px;
 }
-.twitter-name {
+.sns-name {
   margin-top: -8px;
   line-height: 2;
   @include noto($size: 32px, $weight: $font-bold);
