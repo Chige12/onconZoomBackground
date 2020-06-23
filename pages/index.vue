@@ -6,7 +6,7 @@
     .virtual-body
       v-app
         .container
-          v-switch(label="アンバサ用にする" v-model="sourceText.isAmbas" @change="delaycapturecanvas(50)")
+          v-switch(label="アンバサ用にする" v-model="sourceText.isAmbas" @change="toggleambas()")
           v-text-field(label="名前を入力" v-model="sourceText.name" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
           v-row
             v-col(cols="12" sm="6")
@@ -49,6 +49,15 @@ export default {
         attributeLarge: 'デザイン',
         attributeBottom: '',
       },
+      cash: {
+        isAmbas: false,
+        name: 'ちげ',
+        twitter: 'Chige12_',
+        hashtags: ['研究終わらん', 'プログラミング言語かるた'],
+        attributeSmall: 'オンコン運営',
+        attributeLarge: 'デザイン',
+        attributeBottom: '',
+      },
       imgData: null,
     }
   },
@@ -68,6 +77,17 @@ export default {
     })
   },
   methods: {
+    toggleambas() {
+      if (this.sourceText.isAmbas) {
+        this.cash = JSON.parse(JSON.stringify(this.sourceText))
+        this.sourceText.attributeSmall = '過去参加者'
+        this.sourceText.attributeLarge = 'アンバサ'
+        this.sourceText.attributeBottom = '2020 #2'
+      } else {
+        this.sourceText = JSON.parse(JSON.stringify(this.cash))
+      }
+      this.delaycapturecanvas(50)
+    },
     async delaycapturecanvas(ms) {
       await this.delay(ms)
       this.capturecanvas()
