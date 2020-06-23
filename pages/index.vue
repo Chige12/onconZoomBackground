@@ -2,6 +2,8 @@
   .main
     Background(
       :sourceText="sourceText"
+      :imgSrc="imgSrc"
+      :isAmbas="isAmbas"
     )
     .virtual-body
       v-app
@@ -12,19 +14,30 @@
             v-col(cols="12" sm="10")
               v-text-field(label="名前を入力" v-model="sourceText.name" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
             v-col(cols="12" sm="2")
-              v-switch(label="アンバサ用にする" v-model="sourceText.isAmbas" @change="toggleambas()")
+              v-switch(label="アンバサ用にする" v-model="isAmbas" @change="toggleambas()")
           v-row
             v-col(cols="12" sm="6")
               v-text-field(label="Twitter名を入力（@無し）" v-model="sourceText.twitter" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+            //- v-col(cols="12" sm="3")
+            //-   v-text-field(label="Facebook名を入力" v-model="sourceText.twitter" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
             v-col(cols="12" sm="6")
               v-text-field(label="ハッシュタグ（カンマで区切り）" v-model="hashtagsCom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
           v-row
-            v-col(cols="12" sm="4")
+            v-col(cols="12" sm="3")
               v-text-field(label="縦文字（小）" v-model="sourceText.attributeSmall" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
-            v-col(cols="12" sm="4")
+            v-col(cols="12" sm="3")
               v-text-field(label="縦文字（大）" v-model="sourceText.attributeLarge" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
-            v-col(v-if="sourceText.isAmbas" cols="12" sm="4")
+            v-col(cols="12" sm="3")
               v-text-field(label="最初に参加したオンコン（2020 #2 など）" v-model="sourceText.attributeBottom" @change="delaycapturecanvas(50)" @keydown.tab="delaycapturecanvas(50)")
+            v-col(cols="12" sm="3")
+              v-file-input(
+                v-model="files"
+                label="Custom Image (1000x515)"
+                placeholder="カスタム画像をアップロード"
+                ref="imageFile"
+                @change="imageUpload()"
+                prepend-icon="mdi-paperclip"
+                )
           v-btn(@click="downloadImage()") 画像出力
           span.ml-4 {{`zoomBG_${sourceText.name}.png`}}
         .result-wrapper.mt-6
@@ -45,8 +58,9 @@ export default {
   },
   data() {
     return {
+      files: null,
+      isAmbas: false,
       sourceText: {
-        isAmbas: false,
         name: 'ちげ',
         twitter: 'Chige12_',
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
@@ -54,16 +68,24 @@ export default {
         attributeLarge: 'デザイン',
         attributeBottom: '',
       },
-      cash: {
-        isAmbas: false,
+      officialCash: {
         name: 'ちげ',
         twitter: 'Chige12_',
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
         attributeSmall: 'オンコン運営',
         attributeLarge: 'デザイン',
+        attributeBottom: '',
+      },
+      ambasCash: {
+        name: 'ちげ',
+        twitter: 'Chige12_',
+        hashtags: ['研究終わらん', 'プログラミング言語かるた'],
+        attributeSmall: '過去の参加者',
+        attributeLarge: 'アンバサ',
         attributeBottom: '',
       },
       imgData: null,
+      imgSrc: null,
     }
   },
   computed: {
@@ -82,15 +104,32 @@ export default {
     })
   },
   methods: {
-    toggleambas() {
-      if (this.sourceText.isAmbas) {
-        this.cash = JSON.parse(JSON.stringify(this.sourceText))
-        this.sourceText.attributeSmall = '過去の参加者'
-        this.sourceText.attributeLarge = 'アンバサ'
-        this.sourceText.attributeBottom = '2020 #2'
+    imageUpload() {
+      if (this.files) {
+        const file = this.files
+        const reader = new FileReader()
+        // dataURL形式でファイルを読み込む
+        reader.readAsDataURL(file)
+
+        // ファイルの読込が終了した時の処理
+        reader.onload = function () {
+          const dataUrl = reader.result
+          this.imgSrc = dataUrl
+        }.bind(this)
       } else {
-        this.cash.isAmbas = false
-        this.sourceText = JSON.parse(JSON.stringify(this.cash))
+        this.imgSrc = null
+      }
+      this.delaycapturecanvas(50)
+    },
+    toggleambas() {
+      if (this.isAmbas) {
+        this.officialCash = JSON.parse(JSON.stringify(this.sourceText))
+        this.sourceText = JSON.parse(JSON.stringify(this.ambasCash))
+        this.isAmbas = true
+      } else {
+        this.ambasCash = JSON.parse(JSON.stringify(this.sourceText))
+        this.sourceText = JSON.parse(JSON.stringify(this.officialCash))
+        this.isAmbas = false
       }
       this.delaycapturecanvas(50)
     },
@@ -136,6 +175,7 @@ export default {
   width: 100%;
   height: 100%;
   @include absolute($top: 0, $left: 0);
+  z-index: 10;
 }
 
 .result-wrapper {

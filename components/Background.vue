@@ -1,7 +1,7 @@
 <template lang="pug">
 .back-ground
-  .img-target#target(:class="{'ambas':sourceText.isAmbas}")
-    .left-bar(:class="{'ambas-bar':sourceText.isAmbas}")
+  .img-target#target(:class="{'ambas':isAmbas}")
+    .left-bar(:class="{'ambas-bar':isAmbas}")
     .main-contents
       .header
         .name {{sourceText.name}}
@@ -15,15 +15,16 @@
       .contents
         .attribute
           .attribute-wrap
-            .attribute-small(:class="{'ambas': sourceText.isAmbas}") {{sourceText.attributeSmall}}
+            .attribute-small(:class="{'ambas': isAmbas}") {{sourceText.attributeSmall}}
             .attribute-large(
               :style="{fontSize: `${attributeLargeFontSize}px`, marginRight: `${attributeLargeMarginRight}px` }"
-              :class="{'ambas':sourceText.isAmbas}"
+              :class="{'ambas':isAmbas}"
               ) {{sourceText.attributeLarge}}
-            .attribute-bottom(v-if="sourceText.attributeBottom" :class="{'ambas':sourceText.isAmbas}") {{sourceText.attributeBottom}}
+            .attribute-bottom(v-if="sourceText.attributeBottom" :class="{'ambas':isAmbas}") {{sourceText.attributeBottom}}
         .visual-background
-          img(v-if="sourceText.isAmbas" src="~/assets/background-ambas.svg").background
-          img(v-else="sourceText.isAmbas" src="~/assets/background-official.svg").background.background-official
+          .background-custom-img(v-if="imgSrc" :style="{backgroundImage: `url('${imgSrc}')`}")
+          img(v-if="isAmbas" src="~/assets/background-ambas.svg").background
+          img(v-else="isAmbas" src="~/assets/background-official.svg").background.background-official
           Logo
 </template>
 <script>
@@ -32,6 +33,14 @@ export default {
     sourceText: {
       type: Object,
       default: null,
+    },
+    imgSrc: {
+      type: String,
+      default: null,
+    },
+    isAmbas: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -113,6 +122,14 @@ export default {
   &-official {
     opacity: $official-opacity;
   }
+}
+.background-custom-img {
+  @include absolute($top: 0, $left: 0);
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  z-index: 3;
 }
 .header {
   width: 100%;
