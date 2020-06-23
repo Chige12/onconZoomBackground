@@ -82,7 +82,7 @@ export default {
         hashtags: ['研究終わらん', 'プログラミング言語かるた'],
         attributeSmall: '過去の参加者',
         attributeLarge: 'アンバサ',
-        attributeBottom: '',
+        attributeBottom: '2020 #2',
       },
       imgData: null,
       imgSrc: null,
