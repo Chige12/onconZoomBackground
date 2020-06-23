@@ -32,8 +32,8 @@
             v-col(cols="12" sm="3")
               v-file-input(
                 v-model="files"
-                label="Custom Image (1000x515)"
-                placeholder="カスタム画像をアップロード"
+                label="カスタム背景 (1000x515)"
+                placeholder="画像をアップロード"
                 ref="imageFile"
                 @change="imageUpload()"
                 prepend-icon="mdi-paperclip"
