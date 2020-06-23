@@ -80,7 +80,7 @@ export default {
     toggleambas() {
       if (this.sourceText.isAmbas) {
         this.cash = JSON.parse(JSON.stringify(this.sourceText))
-        this.sourceText.attributeSmall = '過去参加者'
+        this.sourceText.attributeSmall = '過去の参加者'
         this.sourceText.attributeLarge = 'アンバサ'
         this.sourceText.attributeBottom = '2020 #2'
       } else {
