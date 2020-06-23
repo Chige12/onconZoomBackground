@@ -137,6 +137,7 @@ export default {
       this.delaycapturecanvas(50)
     },
     async delaycapturecanvas(ms) {
+      scrollTo(0, 0)
       await this.delay(ms)
       this.capturecanvas()
     },
