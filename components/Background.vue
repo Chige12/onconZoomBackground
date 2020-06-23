@@ -10,7 +10,7 @@
             .sns(v-if="sourceText.twitter")
               img(src="~/assets/twitter.svg").sns-icon
               span.sns-name {{'@' + sourceText.twitter}}
-            .sns(v-if="sourceText.twitter")
+            .sns(v-if="sourceText.facebook")
               img(src="~/assets/facebook.svg").sns-icon
               span.sns-name {{sourceText.facebook}}
           .hashtags(:class="{'nosns': !sourceText.twitter}")
