@@ -24,7 +24,7 @@
               )
             .attribute-large(
               :style="{fontSize: `${attributeLargeFontSize}px`, marginRight: `${attributeLargeMarginRight}px` }"
-              :class="{'ambas':isAmbas}"
+              :class="{'ambas':isAmbas, 'nosmall': !sourceText.attributeSmall}"
               v-html="attributeLargeTate"
               )
             .attribute-bottom(v-if="sourceText.attributeBottom" :class="{'ambas':isAmbas}") {{sourceText.attributeBottom}}
@@ -239,6 +239,9 @@ export default {
   @include noto($size: 102px, $color: $official-text, $weight: $font-bold);
   &.ambas {
     color: $ambas-text;
+  }
+  &.nosmall {
+    padding-right: 38px;
   }
 }
 
