@@ -18,11 +18,15 @@
       .contents
         .attribute
           .attribute-wrap
-            .attribute-small(:class="{'ambas': isAmbas}") {{sourceText.attributeSmall}}
+            .attribute-small(
+              :class="{'ambas': isAmbas}"
+              v-html="attributeSmallTate"
+              )
             .attribute-large(
               :style="{fontSize: `${attributeLargeFontSize}px`, marginRight: `${attributeLargeMarginRight}px` }"
               :class="{'ambas':isAmbas}"
-              ) {{sourceText.attributeLarge}}
+              v-html="attributeLargeTate"
+              )
             .attribute-bottom(v-if="sourceText.attributeBottom" :class="{'ambas':isAmbas}") {{sourceText.attributeBottom}}
         .visual-background
           .background-custom-img(v-if="imgSrc" :style="{backgroundImage: `url('${imgSrc}')`}")
@@ -31,6 +35,8 @@
           Logo
 </template>
 <script>
+// import sanitizeHTML from 'sanitize-html'
+
 export default {
   props: {
     sourceText: {
@@ -47,6 +53,28 @@ export default {
     },
   },
   computed: {
+    attributeLargeTate() {
+      let textbox = ''
+      this.sourceText.attributeLarge.split('').forEach(function (c) {
+        if (c === 'ー' || c === '〜') {
+          textbox += '<span class="tate-cho">' + c + '</span>'
+        } else {
+          textbox += c
+        }
+      })
+      return textbox
+    },
+    attributeSmallTate() {
+      let textbox = ''
+      this.sourceText.attributeSmall.split('').forEach(function (c) {
+        if (c === 'ー' || c === '〜') {
+          textbox += '<span class="tate-cho">' + c + '</span>'
+        } else {
+          textbox += c
+        }
+      })
+      return textbox
+    },
     attributeLargeFontSize() {
       const textLength = this.sourceText.attributeLarge.length
       let fontSize = '102'
@@ -190,6 +218,8 @@ export default {
   width: $img-width - $left-bar-width - $background-width;
   height: $background-height;
   writing-mode: vertical-rl;
+  // text-orientation: mixed;
+  // text-combine-upright: digits 2;
 }
 .attribute-small {
   margin-right: 8px;
@@ -205,6 +235,7 @@ export default {
     color: $ambas-text;
   }
 }
+
 .attribute-bottom {
   width: 100%;
   text-align: center;
@@ -214,5 +245,12 @@ export default {
   &.ambas {
     color: $ambas-text;
   }
+}
+</style>
+<style>
+span.tate-cho {
+  display: inline-block;
+  transform-origin: center;
+  transform: rotate(90deg) translateX(15%) translateY(20%);
 }
 </style>
