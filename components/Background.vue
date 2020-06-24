@@ -35,7 +35,7 @@
           Logo
 </template>
 <script>
-// import sanitizeHTML from 'sanitize-html'
+import sanitizeHTML from 'sanitize-html'
 
 export default {
   props: {
@@ -62,7 +62,10 @@ export default {
           textbox += c
         }
       })
-      return textbox
+      return sanitizeHTML(textbox, {
+        allowedTags: false,
+        allowedAttributes: false,
+      })
     },
     attributeSmallTate() {
       let textbox = ''
@@ -73,7 +76,10 @@ export default {
           textbox += c
         }
       })
-      return textbox
+      return sanitizeHTML(textbox, {
+        allowedTags: false,
+        allowedAttributes: false,
+      })
     },
     attributeLargeFontSize() {
       const textLength = this.sourceText.attributeLarge.length
