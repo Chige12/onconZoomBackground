@@ -13,7 +13,7 @@
             .sns(v-if="sourceText.facebook")
               img(src="~/assets/facebook.svg").sns-icon
               span.sns-name {{sourceText.facebook}}
-          .hashtags(:class="{'nosns': !sourceText.twitter}")
+          .hashtags(:class="{'nosns': !sourceText.twitter && !sourceText.facebook}")
             span.hashtag(v-for="hashtag in sourceText.hashtags" :key="hashtag") {{'#' + hashtag}}
       .contents
         .attribute
