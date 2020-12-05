@@ -40,16 +40,17 @@ export default {
   data() {
     return {
       slideKey: 0,
+      awardShowSlide: [],
     }
   },
-  computed: {
-    awardShowSlide() {
+  methods: {
+    setAwardShowSlide() {
       const slideAward = { ...this.awards[0] }
       const presenAward = { ...this.awards[1] }
       const meritAward = { ...this.awards[2] }
       const grandAward = { ...this.awards[3] }
       const ganbattaAward = { ...this.awards[4] }
-      return [
+      const slideArr = [
         {
           logoTitle: true,
           color: '#3c3d3b',
@@ -118,15 +119,21 @@ export default {
           sound: false,
         },
       ]
+      this.awardShowSlide = slideArr
     },
-  },
-  methods: {
-    slideKeyReset() {
+    async requestFullscreen() {
       this.slideKey = 0
+      await this.setAwardShowSlide()
+      await this.$delay(300)
+      this.$refs.konvaCom[0].update()
+      this.$refs.konvaCom[1].update()
     },
     keydownEvent(e) {
       if (e.key === 'ArrowRight') {
         if (this.slideKey < this.awardShowSlide.length - 1) {
+          if (this.slideKey < this.awardShowSlide.length - 2) {
+            this.$refs.konvaCom[this.slideKey + 2].update()
+          }
           this.slideKey++
         }
       }

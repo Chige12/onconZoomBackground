@@ -26,17 +26,17 @@ export default {
       stageHeight: 2160,
     }
   },
-  async mounted() {
+  mounted() {
     this.listen(window, 'resize', this.fitStageIntoParentContainer)
-    await this.$nextTick(() => {})
-    await this.$delay(500)
-    this.firstView()
+    // this.$nextTick(() => {
+    //   this.firstView()
+    // })
   },
   methods: {
     update() {
       this.firstView()
     },
-    firstView() {
+    async firstView() {
       const container = this.$refs.container
       this.stage = new Konva.Stage({
         container,
@@ -45,33 +45,61 @@ export default {
       })
       this.Layer = new Konva.Layer()
       this.stage.add(this.Layer)
-      const imageObj = new Image()
-      imageObj.src = require(`~/assets/award/${this.award.image}.png`)
-      imageObj.onload = () => {
-        this.backgroundImage = new Konva.Image({
-          image: imageObj,
-          x: 0,
-          y: 0,
-          width: this.stageWidth,
-          height: this.stageHeight,
-        })
-        this.Layer.add(this.backgroundImage)
-        this.textLayerDraw()
-        this.stage.draw()
-        this.fitStageIntoParentContainer()
-      }
+      const imageObj = await this.backgroundLayerDraw(
+        require(`~/assets/award/${this.award.image}.png`)
+      ).catch((e) => {
+        console.log('onload error', e)
+      })
+      this.backgroundImage = new Konva.Image({
+        image: imageObj,
+        x: 0,
+        y: 0,
+        width: this.stageWidth,
+        height: this.stageHeight,
+      })
+      this.Layer.add(this.backgroundImage)
+      await this.textLayerDraw()
+      this.stage.draw()
+      this.fitStageIntoParentContainer()
     },
-    textLayerDraw() {
+    backgroundLayerDraw(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.onload = () => resolve(img)
+        img.onerror = (e) => reject(e)
+        img.src = src
+      })
+    },
+    async textLayerDraw() {
       if (this.award.teamNumber) {
-        this.teamtext(this.award.teamNumber, 1440, 'Open Sans', 55, 'italic')
+        await this.teamtext(
+          this.award.teamNumber,
+          1440,
+          'Open Sans',
+          55,
+          'italic'
+        )
       }
       if (this.award.teamName) {
-        this.teamtext(this.award.teamName, 1540, 'Noto Sans JP', 100, 'normal')
+        await this.teamtext(
+          this.award.teamName,
+          1540,
+          'Noto Sans JP',
+          100,
+          'normal'
+        )
       }
       if (this.award.teamMenber) {
-        this.teamtext(this.award.teamMenber, 1730, 'Noto Sans JP', 60, 'normal')
+        await this.teamtext(
+          this.award.teamMenber,
+          1730,
+          'Noto Sans JP',
+          60,
+          'normal'
+        )
       }
       if (!this.award.logoHide) {
+        console.log('logoHide', this.award.logoHide)
         if (this.award.logoTitle) {
           this.logotext(this.onconName, this.award.color, 740)
         } else {

@@ -4,7 +4,7 @@
     .container
       h3.my-1 オンコン用 賞状つく〜る
       p.mb-8 
-      v-text-field(prepend-icon="mdi-pound" label="オンコンのバージョンを入力" v-model="onconName" @change="allUpdateKanva()" @keydown.tab="allUpdateKanva()")
+      v-text-field(prepend-icon="mdi-pound" label="オンコンのバージョンを入力" v-model="onconName" @change="allUpdateSlide()" @keydown.tab="allUpdateSlide()")
       v-card.mb-4(
         v-for="(award, awardKey) in awards"
         :key="`award-key-${award.name}`"
@@ -14,17 +14,16 @@
         v-card-subtitle {{award.name}}
         v-card-text.pb-0: v-row
           v-col(cols="12" sm="6").py-0
-            v-text-field(label="チームNo." v-model="awards[awardKey].teamNumber" @change="updateKanva(awardKey)" @keydown.tab="updateKanva(awardKey)")
+            v-text-field(label="チームNo." v-model="awards[awardKey].teamNumber" @change="updateOneSlide(awardKey)" @keydown.tab="updateOneSlide(awardKey)")
           v-col(cols="12" sm="6").py-0
-            v-text-field(label="チーム名" v-model="awards[awardKey].teamName" @change="updateKanva(awardKey)" @keydown.tab="updateKanva(awardKey)")
-        v-card-text.py-0: v-text-field(label="チームメンバー" v-model="awards[awardKey].teamMenber" @change="updateKanva(awardKey)" @keydown.tab="updateKanva(awardKey)")
+            v-text-field(label="チーム名" v-model="awards[awardKey].teamName" @change="updateOneSlide(awardKey)" @keydown.tab="updateOneSlide(awardKey)")
+        v-card-text.py-0: v-text-field(label="チームメンバー" v-model="awards[awardKey].teamMenber" @change="updateOneSlide(awardKey)" @keydown.tab="updateOneSlide(awardKey)")
       v-row
         v-col(cols="12" sm="12")
           v-btn(@click="requestFullScreen") full Screen
-
-    //- .result-wrapper.mt-6
+    .result-wrapper.mt-6
       .container
-        .konva-images
+        //- .konva-images
           .konva-image(
             v-for="(award, awardKey) in awards" :key="`konva-key-${award.name}`"
           )
@@ -37,20 +36,23 @@
     .download-png
       .konva-png-wrapper(
         v-for="(award, awardKey) in awards" :key="`konva-png-${award.name}`"
+        :style="`background-color: ${award.color};`"
       )
-        .konva-png(@click="downloadOnePng(awardKey)")
+        .konva-png
           konvaCom(
             :award="award" :fullscreen="false"
-            :onconName="onconName" ref="award"
+            :onconName="onconName" ref="konvaCom"
             :id="`award-copy-img-${awardKey}`"
           )
-        v-btn(@click="downloadOnePng(awardKey)").download-btn Download PNG {{award.name}}
+        .download-btn-wrapper
+          .container
+            v-btn(@click="downloadOnePng(awardKey)").download-btn Download PNG {{award.name}}
       img#canvasImage(src="" style="display:none;")
   .fullscreen(v-show="fullscreen")
     slideShow(
       :awards="awards"
       :onconName="onconName"
-      ref="slides"
+      ref="slideShow"
     )
 </template>
 <script>
@@ -73,7 +75,7 @@ export default {
   data() {
     return {
       fullscreen: false,
-      onconName: 'ONLINE INTERN CONTEST #10',
+      onconName: 'ONLINE INTERN CONTEST #xx',
     }
   },
   computed: {
@@ -130,20 +132,22 @@ export default {
     this.listen(document, 'keydown', this.keydownEvent)
   },
   methods: {
-    allUpdateKanva() {
+    allUpdateSlide() {
       for (let i = 0; i < this.awards.length; i++) {
-        this.$refs.award[i].update()
+        this.$refs.konvaCom[i].update()
       }
     },
-    updateKanva(key) {
-      this.$refs.award[key].update()
+    updateOneSlide(key) {
+      this.$refs.konvaCom[key].update()
     },
     keydownEvent(e) {
       if (this.fullscreen) {
-        this.$refs.slides.keydownEvent(e)
+        this.$refs.slideShow.keydownEvent(e)
       }
     },
-    downloadOnePng(awardKey) {
+    async downloadOnePng(awardKey) {
+      await this.$refs.konvaCom[awardKey].update()
+      await this.$delay(500)
       const konvaComDom = document.getElementById(`award-copy-img-${awardKey}`)
       const canvas = konvaComDom.children[0].children[0].children[0] || null
       if (canvas !== null) {
@@ -156,22 +160,14 @@ export default {
         link.click()
       }
     },
-    downloadPng() {
-      const canvas = document.getElementById('targetCanvas')
-      const link = document.getElementById('hiddenLink')
-      link.href = canvas.toDataURL()
-
-      document.getElementById('canvasImage').src = canvas.toDataURL()
-
-      link.click()
-    },
     async requestFullScreen() {
       await (this.fullscreen = true)
       const rootElement = document.documentElement
       rootElement.requestFullscreen()
-      this.$refs.slides.slideKeyReset()
+      this.$refs.slideShow.requestFullscreen()
     },
     async fullScreenChange(e) {
+      // フルスクリーンから戻ったときに発火
       if (
         !document.fullscreenElement &&
         !document.webkitIsFullScreen &&
@@ -179,7 +175,7 @@ export default {
         !document.msFullscreenElement
       ) {
         await (this.fullscreen = false)
-        this.allUpdateKanva()
+        this.allUpdateSlide()
       }
     },
   },
@@ -212,18 +208,21 @@ export default {
 
 .konva-png-wrapper {
   width: 100%;
-  height: 48px;
+  height: min-content;
   overflow: hidden;
   position: relative;
 }
 .konva-png {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
   width: 2341px;
   height: auto;
   cursor: pointer;
 }
+.download-btn-wrapper {
+}
 .download-btn {
-  position: absolute;
-  top: 4px;
-  left: 4px;
 }
 </style>
