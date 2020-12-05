@@ -36,7 +36,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['@/plugins/mixin-common-methods'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -64,11 +64,15 @@ export default {
   },
   webfontloader: {
     custom: {
-      families: ['Noto Sans JP:n5,n7,n9'],
+      families: ['Noto Sans JP:n4,n5,n7,n9','Open Sans:i7'],
       urls: [
-        'https://fonts.googleapis.com/css?family=Noto+Sans+JP:500,700,900&display=swap',
+        'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap',
       ],
     },
+    active: () => {
+      window._fontsAreLoading = true
+      console.log('active!')
+    }
   },
   /*
    ** vuetify module configuration
@@ -100,18 +104,18 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
-    extend(config) {
-      if (process.server && process.browser) {
+    extend(config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
           options: {
-            fix: true,
-          },
+            fix: true
+          }
         })
       }
-    },
+    }
   },
 }
