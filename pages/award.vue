@@ -46,7 +46,10 @@
           )
         .download-btn-wrapper
           .container
-            v-btn(@click="downloadOnePng(awardKey)").download-btn Download PNG {{award.name}}
+            v-btn.download-btn(
+              @click="downloadOnePng(awardKey)"
+              :loading="loading[awardKey]"
+            ) Download PNG {{award.name}}
       img#canvasImage(src="" style="display:none;")
   .fullscreen(v-show="fullscreen")
     slideShow(
@@ -76,6 +79,7 @@ export default {
     return {
       fullscreen: false,
       onconName: 'ONLINE INTERN CONTEST #xx',
+      loading: [false, false, false, false, false],
     }
   },
   computed: {
@@ -146,6 +150,7 @@ export default {
       }
     },
     async downloadOnePng(awardKey) {
+      this.$set(this.loading, awardKey, true)
       await this.$refs.konvaCom[awardKey].update()
       await this.$delay(500)
       const konvaComDom = document.getElementById(`award-copy-img-${awardKey}`)
@@ -159,6 +164,7 @@ export default {
         document.getElementById('canvasImage').src = canvas.toDataURL()
         link.click()
       }
+      this.$set(this.loading, awardKey, false)
     },
     async requestFullScreen() {
       await (this.fullscreen = true)
