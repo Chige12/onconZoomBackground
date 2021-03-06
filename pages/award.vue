@@ -86,6 +86,14 @@ export default {
     awards() {
       return [
         {
+          name: 'めっちゃ頑張ったで賞',
+          image: 'ganbatta-3-11',
+          color: colorCodes.ganbatta,
+          teamNumber: 'Team 5',
+          teamName: '',
+          teamMenber: '',
+        },
+        {
           name: 'スライドデザイン賞',
           image: 'slide-design-3',
           color: colorCodes.slide,
@@ -105,23 +113,15 @@ export default {
           name: '優秀賞',
           teamNumber: 'Team 3',
           color: colorCodes.merit,
-          image: 'merit-award-3',
+          image: 'merit-award-3-11',
           teamName: '',
           teamMenber: '',
         },
         {
           name: '最優秀賞',
-          image: 'grand-prize-3',
+          image: 'grand-prize-3-11',
           color: colorCodes.grand,
           teamNumber: 'Team 4',
-          teamName: '',
-          teamMenber: '',
-        },
-        {
-          name: 'めっちゃ頑張ったで賞',
-          image: 'ganbatta-3',
-          color: colorCodes.ganbatta,
-          teamNumber: 'Team 5',
           teamName: '',
           teamMenber: '',
         },

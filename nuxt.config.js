@@ -64,7 +64,7 @@ export default {
   },
   webfontloader: {
     custom: {
-      families: ['Noto Sans JP:n4,n5,n7,n9','Open Sans:i7'],
+      families: ['Noto Sans JP:n4,n5,n7,n9', 'Open Sans:i7'],
       urls: [
         'https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap',
       ],
@@ -72,7 +72,7 @@ export default {
     active: () => {
       window._fontsAreLoading = true
       console.log('active!')
-    }
+    },
   },
   /*
    ** vuetify module configuration
@@ -112,10 +112,10 @@ export default {
           loader: 'eslint-loader',
           exclude: /(node_modules)/,
           options: {
-            fix: true
-          }
+            fix: true,
+          },
         })
       }
-    }
+    },
   },
 }

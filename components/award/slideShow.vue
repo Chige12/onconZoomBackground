@@ -45,11 +45,11 @@ export default {
   },
   methods: {
     setAwardShowSlide() {
-      const slideAward = { ...this.awards[0] }
-      const presenAward = { ...this.awards[1] }
-      const meritAward = { ...this.awards[2] }
-      const grandAward = { ...this.awards[3] }
-      const ganbattaAward = { ...this.awards[4] }
+      const ganbattaAward = { ...this.awards[0] }
+      const slideAward = { ...this.awards[1] }
+      const presenAward = { ...this.awards[2] }
+      const meritAward = { ...this.awards[3] }
+      const grandAward = { ...this.awards[4] }
       const slideArr = [
         {
           logoTitle: true,
@@ -57,6 +57,17 @@ export default {
           image: 'awards-start',
           sound: false,
         },
+        {
+          color: colorCodes.ganbatta,
+          image: 'ganbatta-1',
+          sound: false,
+        },
+        {
+          color: colorCodes.ganbatta,
+          image: 'ganbatta-2-11',
+          sound: true,
+        },
+        ganbattaAward,
         {
           color: colorCodes.slide,
           image: 'slide-design-1',
@@ -86,7 +97,7 @@ export default {
         },
         {
           color: colorCodes.merit,
-          image: 'merit-award-2',
+          image: 'merit-award-2-11',
           sound: true,
         },
         meritAward,
@@ -97,21 +108,10 @@ export default {
         },
         {
           color: colorCodes.grand,
-          image: 'grand-prize-2',
+          image: 'grand-prize-2-11',
           sound: true,
         },
         grandAward,
-        {
-          color: colorCodes.ganbatta,
-          image: 'ganbatta-1',
-          sound: false,
-        },
-        {
-          color: colorCodes.ganbatta,
-          image: 'ganbatta-2',
-          sound: true,
-        },
-        ganbattaAward,
         {
           logoHide: true,
           color: '#3c3d3b',
